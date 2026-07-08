@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
-import { config } from "./config";
-import { userRoutes } from "./routes";
+import { config } from "./src/config";
+import { userRoutes } from "./src/routes";
 
 const app = new Elysia()
   .onError(({ error, set }) => {
