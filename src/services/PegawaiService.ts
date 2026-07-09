@@ -15,7 +15,12 @@ export class PegawaiService {
     if (!data.nip || !data.nama) {
       throw new Error("NIP dan Nama wajib diisi");
     }
-    return this.repo.create(data);
+    try {
+      return await this.repo.create(data);
+    } catch (e: any) {
+      if (e.code === 'ER_DUP_ENTRY') throw new Error(`NIP '${data.nip}' sudah terdaftar.`);
+      throw e;
+    }
   }
 
   async updatePegawai(id: number, data: Partial<CreatePegawaiDto>) {
@@ -23,7 +28,12 @@ export class PegawaiService {
     if (!existing) {
       throw new Error("Pegawai tidak ditemukan");
     }
-    return this.repo.update(id, data);
+    try {
+      return await this.repo.update(id, data);
+    } catch (e: any) {
+      if (e.code === 'ER_DUP_ENTRY') throw new Error(`NIP '${data.nip}' sudah terdaftar.`);
+      throw e;
+    }
   }
 
   async deletePegawai(id: number) {

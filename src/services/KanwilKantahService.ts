@@ -12,10 +12,22 @@ export class KanwilKantahService {
   }
   async createKanwil(data: CreateKanwilDto) {
     if (!data.kode || !data.nama) throw new Error("Kode dan Nama Kanwil wajib diisi");
-    return this.repo.createKanwil(data);
+    try {
+      return await this.repo.createKanwil(data);
+    } catch (e: any) {
+      if (e.code === 'ER_DUP_ENTRY') {
+        throw new Error(`Kode Kanwil '${data.kode}' sudah digunakan.`);
+      }
+      throw e;
+    }
   }
   async updateKanwil(id: number, data: Partial<CreateKanwilDto>) {
-    return this.repo.updateKanwil(id, data);
+    try {
+      return await this.repo.updateKanwil(id, data);
+    } catch (e: any) {
+      if (e.code === 'ER_DUP_ENTRY') throw new Error(`Kode Kanwil '${data.kode}' sudah digunakan.`);
+      throw e;
+    }
   }
   async deleteKanwil(id: number) {
     return this.repo.deleteKanwil(id);
