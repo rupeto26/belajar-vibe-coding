@@ -5,9 +5,14 @@ import { PegawaiList, PegawaiForm } from "../views/PegawaiView";
 
 export const pegawaiController = new Elysia({ prefix: "/pegawai" })
   // Tampilkan daftar pegawai
-  .get("/", async () => {
+  .get("/", async ({ query }) => {
     const data = await pegawaiService.getAllPegawai();
-    return <PegawaiList data={data} />;
+    let successMsg = "";
+    if (query.success === "created") successMsg = "Data Pegawai berhasil ditambahkan!";
+    else if (query.success === "updated") successMsg = "Data Pegawai berhasil diperbarui!";
+    else if (query.success === "deleted") successMsg = "Data Pegawai berhasil dihapus!";
+    
+    return <PegawaiList data={data} successMsg={successMsg} />;
   })
 
   // Tampilkan form tambah
@@ -22,7 +27,7 @@ export const pegawaiController = new Elysia({ prefix: "/pegawai" })
         jabatan: body.jabatan,
         status: body.status === "1"
       });
-      set.redirect = "/pegawai";
+      set.redirect = "/pegawai?success=created";
     } catch (err: any) {
       return <PegawaiForm data={body} error={err.message} />;
     }
@@ -54,7 +59,7 @@ export const pegawaiController = new Elysia({ prefix: "/pegawai" })
         jabatan: body.jabatan,
         status: body.status === "1"
       });
-      set.redirect = "/pegawai";
+      set.redirect = "/pegawai?success=updated";
     } catch (err: any) {
       return <PegawaiForm isEdit={true} data={{...body, id: params.id}} error={err.message} />;
     }
@@ -70,5 +75,5 @@ export const pegawaiController = new Elysia({ prefix: "/pegawai" })
   // Proses hapus pegawai
   .post("/delete/:id", async ({ params, set }) => {
     await pegawaiService.deletePegawai(Number(params.id));
-    set.redirect = "/pegawai";
+    set.redirect = "/pegawai?success=deleted";
   });

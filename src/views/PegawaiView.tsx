@@ -1,8 +1,14 @@
 import * as Html from "@elysiajs/html";
 import { Layout } from "./Layout";
 
-export const PegawaiList = ({ data }: { data: any[] }) => (
+export const PegawaiList = ({ data, successMsg }: { data: any[], successMsg?: string }) => (
   <Layout title="Master Pegawai">
+    {successMsg && (
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>{successMsg}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    )}
     <div class="card shadow-sm">
       <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
         <h6 class="mb-0 fw-bold"><i class="bi bi-people me-2"></i>Daftar Pegawai</h6>

@@ -5,9 +5,14 @@ import { KanwilList, KanwilForm } from "../views/KanwilKantahView";
 
 export const kanwilKantahController = new Elysia({ prefix: "/kanwil" })
   // Tampilkan daftar Kanwil
-  .get("/", async () => {
+  .get("/", async ({ query }) => {
     const data = await kanwilKantahService.getAllKanwil();
-    return <KanwilList data={data} />;
+    let successMsg = "";
+    if (query.success === "created") successMsg = "Data Kanwil berhasil ditambahkan!";
+    else if (query.success === "updated") successMsg = "Data Kanwil berhasil diperbarui!";
+    else if (query.success === "deleted") successMsg = "Data Kanwil berhasil dihapus!";
+    
+    return <KanwilList data={data} successMsg={successMsg} />;
   })
 
   // Tampilkan form tambah Kanwil
@@ -20,7 +25,7 @@ export const kanwilKantahController = new Elysia({ prefix: "/kanwil" })
         kode: body.kode,
         nama: body.nama,
       });
-      set.redirect = "/kanwil";
+      set.redirect = "/kanwil?success=created";
     } catch (err: any) {
       return <KanwilForm data={body} error={err.message} />;
     }
@@ -48,7 +53,7 @@ export const kanwilKantahController = new Elysia({ prefix: "/kanwil" })
         kode: body.kode,
         nama: body.nama
       });
-      set.redirect = "/kanwil";
+      set.redirect = "/kanwil?success=updated";
     } catch (err: any) {
       return <KanwilForm isEdit={true} data={{...body, id: params.id}} error={err.message} />;
     }
@@ -62,5 +67,5 @@ export const kanwilKantahController = new Elysia({ prefix: "/kanwil" })
   // Proses hapus Kanwil
   .post("/delete/:id", async ({ params, set }) => {
     await kanwilKantahService.deleteKanwil(Number(params.id));
-    set.redirect = "/kanwil";
+    set.redirect = "/kanwil?success=deleted";
   });
