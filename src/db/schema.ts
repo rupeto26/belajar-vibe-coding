@@ -103,7 +103,7 @@ export const templateVersions = mysqlTable("template_versions", {
 
 export const templatePlaceholders = mysqlTable("template_placeholders", {
   id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-  templateVersionId: bigint("template_version_id", { mode: "number" }).references(() => templateVersions.id),
+  tvId: bigint("tv_id", { mode: "number" }).references(() => templateVersions.id),
   nama: varchar("nama", { length: 255 }).notNull(),
   tipe: varchar("tipe", { length: 50 }).notNull(), // Text, Textarea, Number, Date, Dropdown, Repeatable, Formula
   datasource: varchar("datasource", { length: 255 }),
@@ -128,7 +128,7 @@ export const templateFormulas = mysqlTable("template_formulas", {
 
 export const generatedDocuments = mysqlTable("generated_documents", {
   id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-  templateVersionId: bigint("template_version_id", { mode: "number" }).references(() => templateVersions.id),
+  tvId: bigint("tv_id", { mode: "number" }).references(() => templateVersions.id),
   nomorDokumen: varchar("nomor_dokumen", { length: 255 }),
   fileDocx: varchar("file_docx", { length: 500 }),
   filePdf: varchar("file_pdf", { length: 500 }),
@@ -142,7 +142,7 @@ export const generatedDocuments = mysqlTable("generated_documents", {
 
 export const generatedDocumentDetails = mysqlTable("generated_document_details", {
   id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-  generatedDocumentId: bigint("generated_document_id", { mode: "number" }).references(() => generatedDocuments.id),
+  docId: bigint("doc_id", { mode: "number" }).references(() => generatedDocuments.id),
   placeholder: varchar("placeholder", { length: 255 }).notNull(),
   value: text("value"),
   createdAt: timestamp("created_at").defaultNow(),
@@ -155,7 +155,7 @@ export const generatedDocumentDetails = mysqlTable("generated_document_details",
 
 export const templateAnalysisResults = mysqlTable("template_analysis_results", {
   id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-  templateVersionId: bigint("template_version_id", { mode: "number" }).references(() => templateVersions.id),
+  tvId: bigint("tv_id", { mode: "number" }).references(() => templateVersions.id),
   placeholderMetadata: json("placeholder_metadata"),
   fontMetadata: json("font_metadata"),
   layoutMetadata: json("layout_metadata"),
@@ -166,7 +166,7 @@ export const templateAnalysisResults = mysqlTable("template_analysis_results", {
 
 export const templateStyleMetadata = mysqlTable("template_style_metadata", {
   id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-  templateVersionId: bigint("template_version_id", { mode: "number" }).references(() => templateVersions.id),
+  tvId: bigint("tv_id", { mode: "number" }).references(() => templateVersions.id),
   styleJson: json("style_json"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
@@ -185,7 +185,7 @@ export const workflowTransitions = mysqlTable("workflow_transitions", {
 
 export const generatedDocumentSnapshots = mysqlTable("generated_document_snapshots", {
   id: bigint("id", { mode: "number" }).primaryKey().autoincrement(),
-  generatedDocumentId: bigint("generated_document_id", { mode: "number" }).references(() => generatedDocuments.id),
+  docId: bigint("doc_id", { mode: "number" }).references(() => generatedDocuments.id),
   placeholderSnapshot: json("placeholder_snapshot"),
   formulaSnapshot: json("formula_snapshot"),
   datasourceSnapshot: json("datasource_snapshot"),

@@ -2,7 +2,8 @@ import { Elysia } from "elysia";
 import { html } from "@elysiajs/html";
 import * as Html from "@elysiajs/html";
 import { config } from "./src/config";
-import { userRoutes } from "./src/routes";
+import { pegawaiController } from "./src/controllers/PegawaiController";
+import { kanwilKantahController } from "./src/controllers/KanwilKantahController";
 import { Dashboard } from "./src/views/Dashboard";
 
 const app = new Elysia()
@@ -13,7 +14,8 @@ const app = new Elysia()
     return { error: "Internal Server Error" };
   })
   .get("/", () => <Dashboard />)
-  .use(userRoutes)
+  .use(pegawaiController)
+  .use(kanwilKantahController)
   .listen(config.app.port);
 
 console.log(`🚀 Server running at http://localhost:${config.app.port}`);

@@ -62,12 +62,12 @@ export const Layout = ({ children, title = "SIMDO Dashboard" }: { children: any,
                   Master Data
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/pegawai">
                     <i class="bi bi-person-badge me-2"></i> Pegawai
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="/kanwil">
                     <i class="bi bi-building me-2"></i> Instansi
                   </a>
                 </li>
